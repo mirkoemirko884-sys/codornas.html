@@ -58,7 +58,7 @@
         .desconto-tag {
             display: block;
             font-size: 13px;
-            color: #5eff5e; /* VERDE OPERACIONAL */
+            color: #5eff5e; /* VERDE OPERACIONAL PARA DESTAQUE DE BÔNUS */
             font-weight: bold;
             margin-top: 2px;
         }
@@ -103,6 +103,7 @@
     <div class="subtitle">Painel de Romaneio — Combos de Ovos de Codorna</div>
     
     <div class="opcoes-box">
+        <!-- Opção 1 -->
         <label class="radio-group">
             <input type="radio" name="opcaoOvos" value="13.00" checked onchange="atualizarTotal('1 Cartela (30un) - R\$ 13,00', 'Sem desconto')">
             <span class="label-texto">
@@ -111,19 +112,21 @@
             </span>
         </label>
         
+        <!-- Opção 2 -->
         <label class="radio-group">
             <input type="radio" name="opcaoOvos" value="24.00" onchange="atualizarTotal('2 Cartelas (60un) - R\$ 24,00', 'Economia de R\$ 2,00')">
             <span class="label-texto">
                 Se levar <strong>2 Cartelas</strong> (60 un) ➔ ganha bônus e sai por <span class="preco-destaque">R\$ 24,00</span>
-                <span class="desconto-tag">★ Você ganha R\$ 2,00 de desconto comercial!</span>
+                <span class="desconto-tag">★ Você ganha R\$ 2,00 de desconto comercial! (R\$ 12,00 cada)</span>
             </span>
         </label>
         
+        <!-- Opção 3 -->
         <label class="radio-group">
             <input type="radio" name="opcaoOvos" value="33.00" onchange="atualizarTotal('3 Cartelas (90un) - R\$ 33,00', 'Economia de R\$ 6,00')">
             <span class="label-texto">
                 Se levar <strong>3 Cartelas</strong> (90 un) ➔ super bônus e sai por <span class="preco-destaque">R\$ 33,00</span>
-                <span class="desconto-tag">★★ Você ganha R\$ 6,00 de desconto comercial!</span>
+                <span class="desconto-tag">★★ Você ganha R\$ 6,00 de desconto comercial! (R\$ 11,00 cada)</span>
             </span>
         </label>
     </div>
