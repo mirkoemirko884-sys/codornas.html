@@ -75,10 +75,9 @@ def gerar_boleto_pdf(valor_faturamento="R$ 13,00", descricao_produto="1 Cartela 
     style_agradecimento = ParagraphStyle('AgraCustom', parent=styles['Normal'], fontSize=8.5, leading=12, fontName='Helvetica-Oblique', alignment=1, textColor=colors.HexColor('#1e293b'))
 
     story.append(Paragraph("<b>Mairiporã Agro - Sistema de Faturamento</b>", style_title))
-    story.append(Paragraph("Ambiente de Produção Local via VS Code & Python", style_sub))
+    story.append(Paragraph("Ambiente de Production Local via VS Code & Python", style_sub))
     story.append(Spacer(1, 8))
     
-    # Recibo do Sacado com os dados reais passados do combo
     dados_topo = [
         [Paragraph(f"<b>Beneficiário:</b> Mairiporã Agro ({NOME_BANCO})", style_normal), Paragraph(f"<b>Vencimento:</b> {data_venc_str}", style_bold if CONDICAO_AVISTA else style_normal)],
         [Paragraph(f"<b>Pagador:</b> Cliente de Teste - {descricao_produto}", style_normal), Paragraph("<b>Número do Pedido:</b> #749201", style_normal)],
