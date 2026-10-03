@@ -27,8 +27,30 @@
             box-sizing: border-box;
         }
         h2 { margin-bottom: 5px; font-size: 24px; }
-        .subtitle { color: #f1f5f9; font-size: 14px; margin-bottom: 20px; opacity: 0.9; }
+        .subtitle { color: #f1f5f9; font-size: 14px; margin-bottom: 15px; opacity: 0.9; }
         
+        /* PAINEL DE STATUS ON-LINE */
+        .status-bar {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .badge-online {
+            background-color: #5eff5e;
+            color: #000000;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+
         .faturamento-box {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid #ffffff;
@@ -63,7 +85,6 @@
             margin-bottom: 15px;
             border: 1px dashed rgba(255, 255, 255, 0.5);
         }
-
         .btn-voltar {
             display: inline-block;
             padding: 10px 20px;
@@ -86,15 +107,20 @@
     <h2>Mairiporã Agro</h2>
     <div class="subtitle">Faturamento Digital e Recebimento Integrado</div>
     
+    <!-- Relógio do Sistema -->
+    <div class="status-bar">
+        <span class="badge-online">● Emissão Ao Vivo</span>
+        <span id="relogioDigital">Carregando data...</span>
+    </div>
+    
     <div class="faturamento-box">
-        <p><strong>Item:</strong> <span id="labelProduto">Carregando...</span></p>
-        <p><strong>Bônus Aplicado:</strong> <span id="labelDesconto">Carregando...</span></p>
+        <p><strong>Item:</strong> <span id="labelProduto">Buscando dados...</span></p>
+        <p><strong>Bônus Aplicado:</strong> <span id="labelDesconto">Buscando dados...</span></p>
         <p style="font-size: 18px; margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 8px;">
             <strong>Total a Pagar:</strong> <span id="labelPreco" style="font-weight: bold; text-decoration: underline;">R\$ 0,00</span>
         </p>
     </div>
 
-    <!-- Renderização do QR code fixado na raiz -->
     <div class="qrcode-box">
         <img src="qrcode_pagamento.png" alt="QR Code Pix" onerror="this.src='https://placeholder.com'">
     </div>
@@ -113,16 +139,36 @@
         const desconto = urlParams.get('desconto');
 
         if (valor && desc) {
-            document.getElementById('labelProduto').innerText = desc.split(' - ')[0];
-            document.getElementById('labelDesconto').innerText = desconto;
-            document.getElementById('labelPreco').innerText = `R$ ${parseFloat(valor).toFixed(2).replace('.', ',')}`;
+            document.getElementById('labelProduto').innerText = decodeURIComponent(desc).split(' - ')[0];
+            document.getElementById('labelDesconto').innerText = decodeURIComponent(desconto);
+            
+            let precoFormatado = parseFloat(valor).toFixed(2).replace('.', ',');
+            document.getElementById('labelPreco').innerText = 'R\$ ' + precoFormatado;
         } else {
             document.getElementById('labelProduto').innerText = "1 Cartela (30un)";
             document.getElementById('labelDesconto').innerText = "Sem desconto";
             document.getElementById('labelPreco').innerText = "R\$ 13,00";
         }
     }
-    window.onload = capturarParametros;
+
+    function atualizarRelogio() {
+        const agora = new Date();
+        const dia = String(agora.getDate()).padStart(2, '0');
+        const mes = String(agora.getMonth() + 1).padStart(2, '0');
+        const ano = agora.getFullYear();
+        const horas = String(agora.getHours()).padStart(2, '0');
+        const minutes = String(agora.getMinutes()).padStart(2, '0');
+        const segundos = String(agora.getSeconds()).padStart(2, '0');
+        
+        document.getElementById('relogioDigital').innerText = `${dia}/${mes}/${ano} - ${horas}:${minutes}:${segundos}`;
+    }
+    
+    setInterval(atualizarRelogio, 1000);
+    
+    window.onload = function() {
+        capturarParametros();
+        atualizarRelogio();
+    };
 </script>
 
 </body>
