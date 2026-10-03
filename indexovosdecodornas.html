@@ -94,7 +94,7 @@
         </p>
     </div>
 
-    <!-- Ajustado aqui para ler com underline -->
+    <!-- Renderização do QR code fixado na raiz -->
     <div class="qrcode-box">
         <img src="qrcode_pagamento.png" alt="QR Code Pix" onerror="this.src='https://placeholder.com'">
     </div>
@@ -102,8 +102,7 @@
     <p style="font-size: 13px; margin-bottom: 5px;">Código Copia e Cola do Pix:</p>
     <div class="pix-copia" id="pixCodigo">00020126760014BR.GOV.BCB.PIX01363d4ee862-439d-481d-9f5b-07d69a7182f60214Mairiporã Agro5204000053039865802BR5921JOSE CARLOS SUGUIMOTO6009MAIRIPORA62230519JoseCarlosSuguimoto6304C2B6</div>
 
-   <a href="index.html" class="btn-voltar">⬅ Voltar e Alterar Combo</a>
-
+    <a href="index.html" class="btn-voltar">⬅ Voltar e Alterar Combo</a>
 </div>
 
 <script>
@@ -123,7 +122,6 @@
             document.getElementById('labelPreco').innerText = "R\$ 13,00";
         }
     }
-    
     window.onload = capturarParametros;
 </script>
 
