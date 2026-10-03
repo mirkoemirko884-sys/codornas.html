@@ -94,9 +94,9 @@
         </p>
     </div>
 
-    <!-- Renderização do Pix via QR code fixado na raiz -->
+    <!-- Ajustado aqui para ler com underline -->
     <div class="qrcode-box">
-        <img src="qrcode-pagamento.png" alt="QR Code Pix" onerror="this.src='https://placeholder.com'">
+        <img src="qrcode_pagamento.png" alt="QR Code Pix" onerror="this.src='https://placeholder.com'">
     </div>
     
     <p style="font-size: 13px; margin-bottom: 5px;">Código Copia e Cola do Pix:</p>
@@ -117,14 +117,12 @@
             document.getElementById('labelDesconto').innerText = desconto;
             document.getElementById('labelPreco').innerText = `R$ ${parseFloat(valor).toFixed(2).replace('.', ',')}`;
         } else {
-            // Valores padrão caso acesse direto sem passar pela seleção
             document.getElementById('labelProduto').innerText = "1 Cartela (30un)";
             document.getElementById('labelDesconto').innerText = "Sem desconto";
             document.getElementById('labelPreco').innerText = "R\$ 13,00";
         }
     }
     
-    // Executa ao carregar a página
     window.onload = capturarParametros;
 </script>
 
