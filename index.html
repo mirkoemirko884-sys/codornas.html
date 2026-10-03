@@ -148,31 +148,17 @@ def gerar_boleto_pdf(valor_faturamento="R$ 13,00", descricao_produto="1 Cartela 
         
         ('BOX', (0,1), (-1,-1), 1, colors.black),
         ('INNERGRID', (0,1), (-1,-1), 0.5, colors.HexColor('#cbd5e1')),
-        ('PADDING', (0,1), (-1,-1), 4),
+        ('PADDING', (0,0), (-1,-1), 4),
         ('BACKGROUND', (2,1), (2,1), colors.HexColor('#f8fafc')),
-        ('BACKGROUND', (2,5), (2,5), colors.HexColor('#f1f5f9')),
         ('BACKGROUND', (2,8), (2,8), colors.HexColor('#f1f5f9')),
     ]))
+    
     story.append(t_boleto)
-    story.append(Spacer(1, 10))
-    
-    barra_dados = [["|||| || ||||| |||| ||| ||||||| |||| || ||||| |||| ||| ||||||| |||| || ||||| |||| ||| ||||||| |||| || ||||| |||| ||| ||||||| |||| || |||||"]]
-    t_barra = Table(barra_dados, colWidths=[550])
-    t_barra.setStyle(TableStyle([
-        ('ALIGN', (0,0), (-1,-1), 'CENTER'),
-        ('FONTNAME', (0,0), (-1,-1), 'Courier-Bold'),
-        ('FONTSIZE', (0,0), (-1,-1), 18),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 0),
-        ('TOPPADDING', (0,0), (-1,-1), 0),
-    ]))
-    story.append(t_barra)
-    story.append(Spacer(1, 12))
-    
-    story.append(Paragraph("<b>Mairiporã Agro agradece a preferência! <font color='#cc092f'>♥</font> Bom apetite e obrigado por apoiar o comércio e o produtor local!</b>", style_agradecimento))
+    story.append(Spacer(1, 15))
+    story.append(Paragraph("<b>Obrigado por sua preferência e parceria com a Mairiporã Agro!</b>", style_agradecimento))
     
     doc.build(story)
-    print(f"✔️ Sucesso: PDF gerado com valor real de {valor_faturamento}!")
+    print(f"✔️ Sucesso: PDF '{nome_arquivo}' gerado com sucesso!")
 
-if __name__ == '__main__':
-    # Teste de execução padrão inicial para 1 Cartela
-    gerar_boleto_pdf("R$ 13,00", "1 Cartela (30un)")
+if __name__ == "__main__":
+    gerar_boleto_pdf()
