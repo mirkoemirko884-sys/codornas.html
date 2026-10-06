@@ -132,6 +132,7 @@
 </div>
 
 <script>
+    // Função reforçada de captura imediata
     function capturarParametros() {
         const urlParams = new URLSearchParams(window.location.search);
         const valor = urlParams.get('valor');
@@ -139,37 +140,38 @@
         const desconto = urlParams.get('desconto');
 
         if (valor && desc) {
-            document.getElementById('labelProduto').innerText = decodeURIComponent(desc).split(' - ')[0];
+            // Exibe e decodifica os textos sem travar
+            document.getElementById('labelProduto').innerText = decodeURIComponent(desc);
             document.getElementById('labelDesconto').innerText = decodeURIComponent(desconto);
             
+            // Formata o preço para o padrão brasileiro (R\$ XX,XX)
             let precoFormatado = parseFloat(valor).toFixed(2).replace('.', ',');
             document.getElementById('labelPreco').innerText = 'R\$ ' + precoFormatado;
         } else {
-            document.getElementById('labelProduto').innerText = "1 Cartela (30un)";
-            document.getElementById('labelDesconto').innerText = "Sem desconto";
+            // Valores padrão de segurança (caso o cliente tente acessar direto sem escolher)
+            document.getElementById('labelProduto').innerText = "1 Cartela (30un) - R\$ 13,00";
+            document.getElementById('labelDesconto').innerText = "Preço regular por volume";
             document.getElementById('labelPreco').innerText = "R\$ 13,00";
         }
     }
 
+    // Função do Relógio Digital em Tempo Real
     function atualizarRelogio() {
         const agora = new Date();
         const dia = String(agora.getDate()).padStart(2, '0');
         const mes = String(agora.getMonth() + 1).padStart(2, '0');
         const ano = agora.getFullYear();
         const horas = String(agora.getHours()).padStart(2, '0');
-        const minutes = String(agora.getMinutes()).padStart(2, '0');
+        const minutos = String(agora.getMinutes()).padStart(2, '0');
         const segundos = String(agora.getSeconds()).padStart(2, '0');
         
-        document.getElementById('relogioDigital').innerText = `${dia}/${mes}/${ano} - ${horas}:${minutes}:${segundos}`;
+        document.getElementById('relogioDigital').innerText = `${dia}/${mes}/${ano} - ${horas}:${minutos}:${segundos}`;
     }
     
+    // Executa a contagem do relógio a cada 1 segundo
     setInterval(atualizarRelogio, 1000);
     
-    window.onload = function() {
-        capturarParametros();
-        atualizarRelogio();
-    };
+    // Roda as duas funções IMEDIATAMENTE assim que a página abre, sem esperar o carregamento lento
+    capturarParametros();
+    atualizarRelogio();
 </script>
-
-</body>
-</html>
