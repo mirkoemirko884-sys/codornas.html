@@ -175,7 +175,7 @@
         <p><strong>Item:</strong> <span id="labelProduto">Buscando dados...</span></p>
         <p><strong>Bônus:</strong> <span id="labelDesconto">Buscando dados...</span></p>
         <p style="font-size: 18px; margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 8px; margin-bottom: 0;">
-            <strong>Total a Pagar:</strong> <span id="labelPreco" style="font-weight: bold; text-decoration: underline;">R\$ 13,00</span>
+            <strong>Total a Pagar:</strong> <span id="labelPreco" style="font-weight: bold; text-decoration: underline;">R$: 13,00</span>
         </p>
     </div>
 
@@ -226,11 +226,11 @@
             document.getElementById('labelProduto').innerText = decodeURIComponent(desc);
             document.getElementById('labelDesconto').innerText = decodeURIComponent(desconto);
             let precoFormatado = parseFloat(valor).toFixed(2).replace('.', ',');
-            document.getElementById('labelPreco').innerText = 'R\$ ' + precoFormatado;
+            document.getElementById('labelPreco').innerText = 'R$: ' + precoFormatado;
         } else {
-            document.getElementById('labelProduto').innerText = "1 Cartela (30un) - R\$ 13,00";
+            document.getElementById('labelProduto').innerText = "1 Cartela (30un) - R$: 13,00";
             document.getElementById('labelDesconto').innerText = "Preço regular por volume";
-            document.getElementById('labelPreco').innerText = "R\$ 13,00";
+            // document.getElementById('labelPreco').innerText = "R$: 13,00";
         }
     }
 
