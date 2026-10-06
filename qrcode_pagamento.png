@@ -1,1 +1,184 @@
+# -*- coding: utf-8 -*-
+import os
+import qrcode
+from datetime import datetime, timedelta
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib import colors
 
+# =========================================================================
+# ETAPA 1: GERAÇÃO DO QR CODE DO PIX (AUMENTADO PARA BOX_SIZE=12)
+# =========================================================================
+print("Gerando o QR Code do Pix Bradesco otimizado para leitura...")
+
+dados_pix = "00020126760014BR.GOV.BCB.PIX01363d4ee862-439d-481d-9f5b-07d69a7182f60214Mairiporã Agro5204000053039865802BR5921JOSE CARLOS SUGUIMOTO6009MAIRIPORA62230519JoseCarlosSuguimoto6304C2B6"
+
+qr = qrcode.QRCode(
+    version=1,
+    error_correction=qrcode.constants.ERROR_CORRECT_M,  # Melhora resiliência de leitura
+    box_size=12,                                        # QR Code maior e mais nítido
+    border=2,                                           # Margem menor para focar no código
+)
+qr.add_data(dados_pix)
+qr.make(fit=True)
+
+caminho_qrcode_png = "qrcode-pagamento.png"
+img_qr = qr.make_image(fill_color="black", back_color="white")
+img_qr.save(caminho_qrcode_png)
+print(f"✔️ Sucesso: Imagem '{caminho_qrcode_png}' gerada!")
+
+
+# =========================================================================
+# ETAPA 2: CONFIGURAÇÃO E MONTAGEM DO SEU BOLETO COMPLETO
+# =========================================================================
+def gerar_boleto_pdf():
+    nome_arquivo = "boleto_mairipora_agro.pdf"
+    
+    global caminho_qrcode_png
+    if not os.path.exists(caminho_qrcode_png) and os.path.exists("../qrcode-pagamento.png"):
+        caminho_qrcode_png = "../qrcode-pagamento.png"
+    
+    CONDICAO_AVISTA = False  
+    VALOR_TESTE = "R$ 1,99"   
+    
+    COD_BANCO = "237-7"
+    NOME_BANCO = "Bradesco"
+    COR_BANCO = colors.HexColor('#cc092f') 
+    
+    data_doc_str = "23/09/2026"
+    data_doc_obj = datetime.strptime(data_doc_str, "%d/%m/%Y")
+    
+    if CONDICAO_AVISTA:
+        data_venc_str = "A VISTA"
+    else:
+        data_venc_obj = data_doc_obj + timedelta(days=21)
+        data_venc_str = data_venc_obj.strftime("%d/%m/%Y")
+    
+    doc = SimpleDocTemplate(
+        nome_arquivo,
+        pagesize=letter,
+        rightMargin=30,
+        leftMargin=30,
+        topMargin=20,  # Reduzido para dar mais espaço vertical
+        bottomMargin=20,
+        title="Mairiporã Agro - Expedição Digital V2"
+    )
+    
+    story = []
+    styles = getSampleStyleSheet()
+    
+    style_normal = ParagraphStyle('NormalCustom', parent=styles['Normal'], fontSize=8, leading=10)
+    style_bold = ParagraphStyle('BoldCustom', parent=styles['Normal'], fontSize=8, leading=10, fontName='Helvetica-Bold')
+    style_title = ParagraphStyle('TitleCustom', parent=styles['Normal'], fontSize=13, leading=16, fontName='Helvetica-Bold', alignment=1)
+    style_sub = ParagraphStyle('SubCustom', parent=styles['Normal'], fontSize=8, leading=10, alignment=1, textColor=colors.HexColor('#666666'))
+    style_obs = ParagraphStyle('ObsCustom', parent=styles['Normal'], fontSize=7.5, leading=11)
+    style_agradecimento = ParagraphStyle('AgraCustom', parent=styles['Normal'], fontSize=8.5, leading=12, fontName='Helvetica-Oblique', alignment=1, textColor=colors.HexColor('#1e293b'))
+
+    # 1. Cabeçalho Compactado
+    story.append(Paragraph("<b>Mairiporã Agro - Sistema de Faturamento</b>", style_title))
+    story.append(Paragraph("Ambiente de Homologação / Teste Técnico Local via VS Code & Python", style_sub))
+    story.append(Spacer(1, 8))
+    
+    # 2. Recibo do Sacado (Topo)
+    dados_topo = [
+        [Paragraph(f"<b>Beneficiário:</b> Mairiporã Agro ({NOME_BANCO})", style_normal), Paragraph(f"<b>Vencimento:</b> {data_venc_str}", style_bold if CONDICAO_AVISTA else style_normal)],
+        [Paragraph("<b>Pagador:</b> Cliente de Teste Homologação", style_normal), Paragraph("<b>Número do Pedido:</b> #749201", style_normal)],
+        [Paragraph("<b>Espécie:</b> R$ (Real)", style_normal), Paragraph(f"<b>Valor Cobrado:</b> {VALOR_TESTE}", style_bold)]
+    ]
+    
+    t_topo = Table(dados_topo, colWidths=[350, 200])
+    t_topo.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#f8fafc')),
+        ('BOX', (0,0), (-1,-1), 1, colors.HexColor('#cbd5e1')),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor('#e2e8f0')),
+        ('PADDING', (0,0), (-1,-1), 4),
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+    ]))
+    story.append(t_topo)
+    story.append(Spacer(1, 8))
+    
+    story.append(Paragraph("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Recorte na Linha Pontilhada - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -", ParagraphStyle('Corte', fontSize=7, alignment=1, textColor=colors.HexColor('#94a3b8'))))
+    story.append(Spacer(1, 8))
+    
+    # Injeta o QR Code físico ampliado (width/height ajustados de 45 para 65)
+    if os.path.exists(caminho_qrcode_png):
+        img_qrcode = Image(caminho_qrcode_png, width=65, height=65)
+    else:
+        img_qrcode = Paragraph("[QR CODE]", style_bold)
+    
+    # INOVAÇÃO RADICAL: Mesma linha contendo Banco, QR Code Maior e a Linha Digitável
+    linha1 = [
+        Paragraph(f"<b>{NOME_BANCO}<br/>{COD_BANCO}</b>", ParagraphStyle('BancoReg', fontSize=12, fontName='Helvetica-Bold', textColor=COR_BANCO, alignment=0, leading=14)),
+        img_qrcode,
+        Paragraph("<b>23791.79001 01043.513184 91020.150008 7 98480000008500</b>", ParagraphStyle('Linha', fontSize=9, fontName='Helvetica-Bold', alignment=2))
+    ]
+    
+    texto_observacoes = (
+        "<b>Campo Obs (Controle de Produção e Romaneio):</b><br/>"
+        "[  ] Ovos de codornas IN NATURA — Qtd: ________ cartelas<br/>"
+        "[  ] CONSERVAS (Vendas Normais / Estilo Refil) — Qtd: ________ SACOS PLÁSTICOS<br/>"
+        "[  ] CONSERVAS (Vendas Especiais / Encomendas) — Qtd: ________ VIDRO / POTES LINHA ESPECIAIS<br/>"
+        "[  ] Diversos: esterco de codornas (<b>RETIRADA A COMBINAR POR VOLUME/PESO</b>) — Qtd: ________ KILOS<br/>"
+        "<b>Logística de Expedição:</b> [ X ] ENTREGA EM MÃOS  —  Data do Recebimento: ____/____/____<br/>"
+        f"<font color='{COR_BANCO.hexval()}'><b>[ X ] ASSINATURA DIGITAL VIA CELULAR DE ACEITE (MOBILE-ID):</b></font><br/>"
+        "<i>Status: Confirmado via aplicativo logístico — Hash: 9a8b7c6d_MairiporaAgro_2026</i>"
+    )
+    
+    tabela_boleto_dados = [
+        linha1,
+        [Paragraph("<b>Local de Pagamento:</b> Qualquer Banco ou Casa Lotérica até o vencimento", style_normal), "", Paragraph(f"<b>Vencimento:</b> {data_venc_str}", style_bold)],
+        [Paragraph("<b>Beneficiário:</b> Mairiporã Agro - JOSÉ CARLOS SUGUIMOTO - (Conta de Depósito PF)", style_normal), "", Paragraph("<b>Agência/Código Beneficiário:</b> 0449 / 0080619-6", style_normal)],
+        [Paragraph(f"<b>Data do Doc:</b> {data_doc_str}", style_normal), Paragraph("<b>Nº Documento:</b> 749201", style_normal), Paragraph("<b>Espécie Doc:</b> DM", style_normal)],
+        [Paragraph("<b>Uso do Banco:</b>", style_normal), Paragraph("<b>Carteira:</b> 109", style_normal), Paragraph("<b>Espécie:</b> R$", style_normal)],
+        [Paragraph("<b>Instruções de Responsabilidade do Beneficiário:</b><br/>• Teste técnico de layout local para validação no VS Code.<br/>• Pagamento válido para crédito em conta Bradesco PF.<br/>• <b>Liberação imediata da mercadoria realizada por pura fidelidade (relação de confiança).</b>", style_normal), "", Paragraph(f"<b>(=) Valor do Documento:</b> {VALOR_TESTE}", style_bold)],
+        [Paragraph(texto_observacoes, style_obs), "", Paragraph("<b>(-) Descontos / Abatimentos:</b>", style_normal)],
+        ["", "", Paragraph("<b>(+) Multa / Juros:</b>", style_normal)],
+        ["", "", Paragraph(f"<b>(=) Valor Cobrado:</b> {VALOR_TESTE}", style_bold)]
+    ]
+    
+    # Redimensionamento preciso: Banco(100) + QR Code Maior(80) + Linha Digitável(370) = 550
+    t_boleto = Table(tabela_boleto_dados, colWidths=[100, 80, 370])
+    t_boleto.setStyle(TableStyle([
+        ('VALIGN', (0,0), (-1,-1), 'TOP'),
+        ('ALIGN', (1,0), (1,0), 'CENTER'),
+        ('VALIGN', (0,0), (-1,0), 'MIDDLE'),
+        ('BOTTOMPADDING', (0,0), (-1,0), 4),
+        ('LINEBELOW', (0,0), (-1,0), 2, COR_BANCO),
+        
+        ('SPAN', (0,1), (1,1)),
+        ('SPAN', (0,2), (1,2)),
+        ('SPAN', (0,5), (1,5)),
+        ('SPAN', (0,6), (1,8)),
+        
+        ('BOX', (0,1), (-1,-1), 1, colors.black),
+        ('INNERGRID', (0,1), (-1,-1), 0.5, colors.HexColor('#cbd5e1')),
+        ('PADDING', (0,1), (-1,-1), 4),
+        ('BACKGROUND', (2,1), (2,1), colors.HexColor('#f8fafc')),
+        ('BACKGROUND', (2,5), (2,5), colors.HexColor('#f1f5f9')),
+        ('BACKGROUND', (2,8), (2,8), colors.HexColor('#f1f5f9')),
+    ]))
+    story.append(t_boleto)
+    story.append(Spacer(1, 10))
+    
+    # 4. Desenho Gráfico do Código de Barras (Formatado e alinhado)
+    barra_dados = [["|||| || ||||| |||| ||| ||||||| |||| || ||||| |||| ||| ||||||| |||| || ||||| |||| ||| ||||||| |||| || ||||| |||| ||| ||||||| |||| || |||||"]]
+    t_barra = Table(barra_dados, colWidths=[550])
+    t_barra.setStyle(TableStyle([
+        ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+        ('FONTNAME', (0,0), (-1,-1), 'Courier-Bold'),
+        ('FONTSIZE', (0,0), (-1,-1), 18),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 0),
+        ('TOPPADDING', (0,0), (-1,-1), 0),
+    ]))
+    story.append(t_barra)
+    story.append(Spacer(1, 12))
+    
+    # 5. Rodapé Comercial
+    story.append(Paragraph("<b>Mairiporã Agro agradece a preferência! <font color='#cc092f'>♥</font> Bom apetite e obrigado por apoiar o comércio e o produtor local!</b>", style_agradecimento))
+    
+    doc.build(story)
+    print("✔️ Sucesso: PDF gerado com o novo cabeçalho otimizado e QR Code maior!")
+
+if __name__ == '__main__':
+    gerar_boleto_pdf()
