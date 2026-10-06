@@ -32,7 +32,7 @@ print(f"✔️ Sucesso: Imagem '{caminho_qrcode_png}' gerada!")
 # =========================================================================
 # ETAPA 2: CONFIGURAÇÃO E MONTAGEM DO SEU BOLETO COMPLETO (REAL)
 # =========================================================================
-def gerar_boleto_pdf(valor_faturamento="R$ 13,00", descricao_produto="1 Cartela (30un)"):
+def gerar_boleto_pdf(valor_faturamento="R$: 13,00", descricao_produto="1 Cartela (30un)"):
     nome_arquivo = "boleto_mairipora_agro.pdf"
     
     global caminho_qrcode_png
