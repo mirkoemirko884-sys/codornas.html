@@ -60,7 +60,6 @@
             font-size: 15px;
         }
         
-        /* BLOCOS SEPARADORES DAS OPÇÕES */
         .opcao-pagamento {
             background: rgba(0, 0, 0, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.3);
@@ -119,6 +118,23 @@
             transition: background 0.2s;
         }
         .btn-copiar:hover { background-color: #4cdb4c; }
+
+        /* NOVO BOTÃO DE IMPRESSÃO / SALVAR PDF */
+        .btn-imprimir {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #ffffff;
+            color: #cc092f;
+            border: 2px solid #ffffff;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: background 0.2s;
+        }
+        .btn-imprimir:hover { background: #f1f5f9; }
         
         .btn-voltar {
             display: inline-block;
@@ -131,6 +147,16 @@
             font-size: 14px;
             font-weight: bold;
             margin-top: 10px;
+        }
+
+        /* REGRAS DE IMPRESSÃO (OCULTA BOTÕES NA HORA DE SALVAR PDF) */
+        @media print {
+            body { background-color: #ffffff; color: #000000; }
+            .container { border: none; background: #ffffff; color: #000000; max-width: 100%; padding: 0; }
+            .btn-copiar, .btn-imprimir, .btn-voltar, .status-bar { display: none !important; }
+            .faturamento-box, .opcao-pagamento { background: none; border: 1px solid #000000; color: #000000; }
+            .opcao-titulo { color: #000000; border-bottom: 1px solid #000000; }
+            .dados-texto { color: #000000; border: 1px dashed #000000; background: none; }
         }
     </style>
 </head>
@@ -183,6 +209,9 @@
         </div>
     </div>
 
+    <!-- AÇÃO 5: BOTÃO DE IMPRESSÃO / SALVAR EM PDF -->
+    <button class="btn-imprimir" onclick="window.print()">🖨️ Imprimir ou Salvar Boleto em PDF</button>
+
     <a href="index.html" class="btn-voltar">⬅ Voltar e Alterar Combo</a>
 </div>
 
@@ -205,7 +234,6 @@
         }
     }
 
-    // Função de cópia inteligente reutilizável
     function copiarTexto(idElemento, idBotao) {
         const texto = document.getElementById(idElemento).innerText;
         navigator.clipboard.writeText(texto).then(() => {
@@ -231,12 +259,3 @@
         const horas = String(agora.getHours()).padStart(2, '0');
         const minutos = String(agora.getMinutes()).padStart(2, '0');
         const segundos = String(agora.getSeconds()).padStart(2, '0');
-        document.getElementById('relogioDigital').innerText = `${dia}/${mes}/${ano} - ${horas}:${minutos}:${segundos}`;
-    }
-    
-    setInterval(atualizarRelogio, 1000);
-    capturarParametros();
-    atualizarRelogio();
-</script>
-</body>
-</html>
