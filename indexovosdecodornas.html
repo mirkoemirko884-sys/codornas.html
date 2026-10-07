@@ -119,7 +119,7 @@
         }
         .btn-copiar:hover { background-color: #4cdb4c; }
 
-        /* NOVO BOTÃO DE IMPRESSÃO / SALVAR PDF */
+        /* TEXTO SIMPLIFICADO FOCO EM IMPRESSÃO UNIVERSAL */
         .btn-imprimir {
             display: block;
             width: 100%;
@@ -149,7 +149,7 @@
             margin-top: 10px;
         }
 
-        /* REGRAS DE IMPRESSÃO (OCULTA BOTÕES NA HORA DE SALVAR PDF) */
+        /* REGRAS DE IMPRESSÃO LIMPA */
         @media print {
             body { background-color: #ffffff; color: #000000; }
             .container { border: none; background: #ffffff; color: #000000; max-width: 100%; padding: 0; }
@@ -209,8 +209,8 @@
         </div>
     </div>
 
-    <!-- AÇÃO 5: BOTÃO DE IMPRESSÃO / SALVAR EM PDF -->
-    <button class="btn-imprimir" onclick="window.print()">🖨️ Imprimir ou Salvar Boleto em PDF</button>
+    <!-- NOVO BOTÃO DE IMPRESSÃO UNIVERSAL -->
+    <button class="btn-imprimir" onclick="window.print()">🖨️ Imprimir Romaneio de Faturamento</button>
 
     <a href="index.html" class="btn-voltar">⬅ Voltar e Alterar Combo</a>
 </div>
@@ -223,14 +223,16 @@
         const desconto = urlParams.get('desconto');
 
         if (valor && desc) {
+            // Lógica ajustada com suporte ao padrão R$: com dois pontos
             document.getElementById('labelProduto').innerText = decodeURIComponent(desc);
             document.getElementById('labelDesconto').innerText = decodeURIComponent(desconto);
             let precoFormatado = parseFloat(valor).toFixed(2).replace('.', ',');
             document.getElementById('labelPreco').innerText = 'R$: ' + precoFormatado;
         } else {
+            // Valores fixos de contingência
             document.getElementById('labelProduto').innerText = "1 Cartela (30un) - R$: 13,00";
             document.getElementById('labelDesconto').innerText = "Preço regular por volume";
-            // document.getElementById('labelPreco').innerText = "R$: 13,00";
+            document.getElementById('labelPreco').innerText = "R$: 13,00";
         }
     }
 
@@ -258,4 +260,3 @@
         const ano = agora.getFullYear();
         const horas = String(agora.getHours()).padStart(2, '0');
         const minutos = String(agora.getMinutes()).padStart(2, '0');
-        const segundos = String(agora.getSeconds()).padStart(2, '0');
