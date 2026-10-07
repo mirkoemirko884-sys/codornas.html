@@ -28,7 +28,6 @@
         h2 { color: #ffffff; margin-bottom: 5px; font-size: 24px; }
         .subtitle { color: #f1f5f9; font-size: 14px; margin-bottom: 15px; opacity: 0.9; }
         
-        /* PAINEL DE STATUS ON-LINE */
         .status-bar {
             background: rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.4);
@@ -119,7 +118,6 @@
     <h2>Mairiporã Agro</h2>
     <div class="subtitle">Painel de Romaneio — Combos de Ovos de Codorna</div>
     
-    <!-- Relógio do Sistema -->
     <div class="status-bar">
         <span class="badge-online">● Sistema On-line</span>
         <span id="relogioDigital">Carregando data...</span>
@@ -127,47 +125,47 @@
     
     <div class="opcoes-box">
         <label class="radio-group">
-            <input type="radio" name="opcaoOvos" value="13,00" checked onchange="atualizarTotal('1 Cartela (30un) - R$: 13,00', 'Sem desconto')">
+            <input type="radio" name="opcaoOvos" value="13.00" checked onchange="atualizarTotal('1 Cartela (30un) - R\$: 13,00', 'Sem desconto')">
             <span class="label-texto">
-                Se levar <strong>1 Cartela</strong> (30 un) ➔ sai por <span class="preco-destaque">R$: 13,00</span>
+                Se levar <strong>1 Cartela</strong> (30 un) ➔ sai por <span class="preco-destaque">R\$: 13,00</span>
                 <span class="desconto-tag" style="color: #e2e8f0; font-weight: normal; opacity: 0.7;">Preço regular por volume</span>
             </span>
         </label>
         
         <label class="radio-group">
-            <input type="radio" name="opcaoOvos" value="24.00" onchange="atualizarTotal('2 Cartelas (60un) - R$: 24,00', 'Economia de R$: 2,00')">
+            <input type="radio" name="opcaoOvos" value="24.00" onchange="atualizarTotal('2 Cartelas (60un) - R\$: 24,00', 'Economia de R\$: 2,00')">
             <span class="label-texto">
-                Se levar <strong>2 Cartelas</strong> (60 un) ➔ ganha bônus e sai por <span class="preco-destaque">R$: 24,00</span>
-                <span class="desconto-tag">★ Você ganha R$: 2,00 de desconto comercial! (R$: 12,00 cada)</span>
+                Se levar <strong>2 Cartelas</strong> (60 un) ➔ ganha bônus e sai por <span class="preco-destaque">R\$: 24,00</span>
+                <span class="desconto-tag">★ Você ganha R\$: 2,00 de desconto comercial! (R\$: 12,00 cada)</span>
             </span>
         </label>
         
         <label class="radio-group">
-            <input type="radio" name="opcaoOvos" value="33,00" onchange="atualizarTotal('3 Cartelas (90un) - R$: 33,00', 'Economia de R$: 6,00')">
+            <input type="radio" name="opcaoOvos" value="33.00" onchange="atualizarTotal('3 Cartelas (90un) - R\$: 33,00', 'Economia de R\$: 6,00')">
             <span class="label-texto">
-                Se levar <strong>3 Cartelas</strong> (90 un) ➔ super bônus e sai por <span class="preco-destaque">R$: 33,00</span>
-                <span class="desconto-tag">★★ Você ganha R$: 6,00 de desconto comercial! (R$: 11,00 cada)</span>
+                Se levar <strong>3 Cartelas</strong> (90 un) ➔ super bônus e sai por <span class="preco-destaque">R\$: 33,00</span>
+                <span class="desconto-tag">★★ Você ganha R\$: 6,00 de desconto comercial! (R\$: 11,00 cada)</span>
             </span>
         </label>
     </div>
 
     <div class="total-box">
         <span>Faturamento Selecionado:</span>
-        <span id="valorTotalExibido" class="total-value">R$: 13,00</span>
+        <span id="valorTotalExibido" class="total-value">R\$: 13,00</span>
     </div>
 
     <button class="btn-avancar" onclick="avancarParaFaturamento()">Gerar e Enviar Faturamento</button>
 </div>
 
 <script>
-    let descricaoSelecionada = "1 Cartela (30un) - R$: 13,00";
+    let descricaoSelecionada = "1 Cartela (30un) - R\$: 13,00";
     let descontoTexto = "Sem desconto";
 
     function atualizarTotal(descricao, desconto) {
         const preco = document.querySelector('input[name="opcaoOvos"]:checked').value;
         descricaoSelecionada = descricao;
         descontoTexto = desconto;
-        document.getElementById('valorTotalExibido').innerText = `R$ ${preco.replace('.', ',')}`;
+        document.getElementById('valorTotalExibido').innerText = `R$: ${preco.replace('.', ',')}`;
     }
 
     function avancarParaFaturamento() {
@@ -175,7 +173,6 @@
         window.location.href = "indexovosdecodornas.html?valor=" + preco + "&desc=" + encodeURIComponent(descricaoSelecionada) + "&desconto=" + encodeURIComponent(descontoTexto);
     }
 
-    // Função do Relógio em Tempo Real
     function atualizarRelogio() {
         const agora = new Date();
         const dia = String(agora.getDate()).padStart(2, '0');
@@ -184,12 +181,11 @@
         const horas = String(agora.getHours()).padStart(2, '0');
         const minutos = String(agora.getMinutes()).padStart(2, '0');
         const segundos = String(agora.getSeconds()).padStart(2, '0');
-        
         document.getElementById('relogioDigital').innerText = `${dia}/${mes}/${ano} - ${horas}:${minutos}:${segundos}`;
     }
+    
     setInterval(atualizarRelogio, 1000);
-    window.addEventListener('load', atualizarRelogio);
+    atualizarRelogio();
 </script>
-
 </body>
 </html>
