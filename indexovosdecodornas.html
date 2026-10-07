@@ -3,260 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mairiporã Agro | Faturamento Multimeios</title>
+    <title>Teste Isolado | Mairiporã Agro</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: #cc092f; /* IDENTIDADE VERMELHA RESTRITA */
+            font-family: sans-serif;
+            background-color: #cc092f; /* MANTER O VERMELHO DO CRIATÓRIO */
             color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding: 20px;
         }
         .container {
-            background: #cc092f;
-            padding: 30px;
-            border: 2px solid #ffffff;
+            background: #ffffff; /* CAIXA BRANCA PURA */
+            padding: 20px;
             border-radius: 12px;
-            width: 100%;
-            max-width: 480px;
             text-align: center;
-            box-sizing: border-box;
-        }
-        h2 { margin-bottom: 5px; font-size: 24px; }
-        .subtitle { color: #f1f5f9; font-size: 14px; margin-bottom: 15px; opacity: 0.9; }
-        
-        .status-bar {
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 6px;
-            padding: 8px;
-            font-size: 12px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .badge-online {
-            background-color: #5eff5e;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             color: #000000;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 10px;
-            text-transform: uppercase;
+            width: 90%;
+            max-width: 320px;
         }
-
-        .faturamento-box {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid #ffffff;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            text-align: left;
-            font-size: 15px;
-        }
-        
-        .opcao-pagamento {
-            background: rgba(0, 0, 0, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        .opcao-titulo {
-            font-size: 13px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 10px;
-            color: #f8fafc;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-            padding-bottom: 4px;
-        }
-
-        .qrcode-box {
-            background: #ffffff;
-            padding: 10px;
-            border-radius: 6px;
-            display: inline-block;
-            margin-bottom: 5px;
-        }
-        .qrcode-box img {
-            width: 160px;
-            height: 160px;
+        h3 { margin-top: 0; margin-bottom: 15px; color: #cc092f; }
+        img {
+            width: 220px;
+            height: 220px;
             display: block;
+            margin: 0 auto;
+            border: 1px solid #cbd5e1;
         }
-        
-        .dados-texto {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            word-break: break-all;
-            margin-bottom: 8px;
-            border: 1px dashed rgba(255, 255, 255, 0.4);
-            text-align: left;
-            font-family: monospace;
-        }
-
-        .btn-copiar {
-            display: block;
-            width: 100%;
-            padding: 8px;
-            background-color: #5eff5e; /* VERDE OPERACIONAL */
-            color: #000000;
-            border: none;
-            border-radius: 5px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .btn-copiar:hover { background-color: #4cdb4c; }
-
-        /* TEXTO SIMPLIFICADO FOCO EM IMPRESSÃO UNIVERSAL */
-        .btn-imprimir {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background-color: #ffffff;
-            color: #cc092f;
-            border: 2px solid #ffffff;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-bottom: 15px;
-            transition: background 0.2s;
-        }
-        .btn-imprimir:hover { background: #f1f5f9; }
-        
         .btn-voltar {
             display: inline-block;
-            padding: 10px 20px;
-            background-color: transparent;
+            margin-top: 20px;
+            padding: 8px 16px;
+            background-color: #cc092f;
             color: #ffffff;
-            border: 1px solid #ffffff;
-            border-radius: 6px;
             text-decoration: none;
-            font-size: 14px;
+            border-radius: 6px;
             font-weight: bold;
-            margin-top: 10px;
-        }
-
-        /* REGRAS DE IMPRESSÃO LIMPA */
-        @media print {
-            body { background-color: #ffffff; color: #000000; }
-            .container { border: none; background: #ffffff; color: #000000; max-width: 100%; padding: 0; }
-            .btn-copiar, .btn-imprimir, .btn-voltar, .status-bar { display: none !important; }
-            .faturamento-box, .opcao-pagamento { background: none; border: 1px solid #000000; color: #000000; }
-            .opcao-titulo { color: #000000; border-bottom: 1px solid #000000; }
-            .dados-texto { color: #000000; border: 1px dashed #000000; background: none; }
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Mairiporã Agro</h2>
-    <div class="subtitle">Faturamento Digital Multi-Meios Integrado</div>
+    <h3>PIX BRADESCO</h3>
+    <!-- Chamada direta do arquivo físico do repositório -->
+    <img src="imagemqrcode.png" alt="QR Code Real do Bradesco">
     
-    <div class="status-bar">
-        <span class="badge-online">● Hub de Pagamento</span>
-        <span id="relogioDigital">Carregando data...</span>
-    </div>
-    
-    <div class="faturamento-box">
-        <p><strong>Item:</strong> <span id="labelProduto">Buscando dados...</span></p>
-        <p><strong>Bônus:</strong> <span id="labelDesconto">Buscando dados...</span></p>
-        <p style="font-size: 18px; margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 8px; margin-bottom: 0;">
-            <strong>Total a Pagar:</strong> <span id="labelPreco" style="font-weight: bold; text-decoration: underline;">R$: 13,00</span>
-        </p>
-    </div>
-
-    <!-- OPÇÃO 1: QR CODE PIX VISUAL -->
-    <div class="opcao-pagamento">
-        <div class="opcao-titulo">1. QR Code Pix Dinâmico</div>
-        <div class="qrcode-box">
-            <img src="imagemqrcode.png" alt="QR Code Pix" onerror="this.src='https://placeholder.com'">
-        </div>
-    </div>
-    
-    <!-- OPÇÃO 2: PIX COPIA E COLA -->
-    <div class="opcao-pagamento">
-        <div class="opcao-titulo">2. Pix Copia e Cola (Chave Aleatória)</div>
-        <div class="dados-texto" id="pixCodigo">00020126760014BR.GOV.BCB.PIX01363d4ee862-439d-481d-9f5b-07d69a7182f60214Mairiporã Agro5204000053039865802BR5921JOSE CARLOS SUGUIMOTO6009MAIRIPORA62230519JoseCarlosSuguimoto6304C2B6</div>
-        <button class="btn-copiar" onclick="copiarTexto('pixCodigo', 'btnPix')" id="btnPix">📋 Copiar Código Pix</button>
-    </div>
-
-    <!-- OPÇÃO 3: CÓDIGO DE BARRAS (BOLETO) -->
-    <div class="opcao-pagamento">
-        <div class="opcao-titulo">3. Linha Digitável do Boleto (Bradesco)</div>
-        <div class="dados-texto" id="boletoCodigo">23791.79001 01043.513184 91020.150008 7 98480000008500</div>
-        <button class="btn-copiar" onclick="copiarTexto('boletoCodigo', 'btnBoleto')" id="btnBoleto">📋 Copiar Linha do Boleto</button>
-    </div>
-
-    <!-- OPÇÃO 4: QR CODE DA BARRA DO BOLETO -->
-    <div class="opcao-pagamento">
-        <div class="opcao-titulo">4. QR Code da Barra (Leitura de Boleto)</div>
-        <div class="qrcode-box">
-            <img src="qrcode_pagamento.png" alt="QR Code Boleto" onerror="this.src='https://placeholder.com'">
-        </div>
-    </div>
-
-    <!-- NOVO BOTÃO DE IMPRESSÃO UNIVERSAL -->
-    <button class="btn-imprimir" onclick="window.print()">🖨️ Imprimir Romaneio de Faturamento</button>
-
-    <a href="index.html" class="btn-voltar">⬅ Voltar e Alterar Combo</a>
+    <a href="index.html" class="btn-voltar">⬅ Voltar para os Combos</a>
 </div>
 
-<script>
-    function capturarParametros() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const valor = urlParams.get('valor');
-        const desc = urlParams.get('desc');
-        const desconto = urlParams.get('desconto');
-
-        if (valor && desc) {
-            // Lógica ajustada com suporte ao padrão R$: com dois pontos
-            document.getElementById('labelProduto').innerText = decodeURIComponent(desc);
-            document.getElementById('labelDesconto').innerText = decodeURIComponent(desconto);
-            let precoFormatado = parseFloat(valor).toFixed(2).replace('.', ',');
-            document.getElementById('labelPreco').innerText = 'R$: ' + precoFormatado;
-        } else {
-            // Valores fixos de contingência
-            document.getElementById('labelProduto').innerText = "1 Cartela (30un) - R$: 13,00";
-            document.getElementById('labelDesconto').innerText = "Preço regular por volume";
-            document.getElementById('labelPreco').innerText = "R$: 13,00";
-        }
-    }
-
-    function copiarTexto(idElemento, idBotao) {
-        const texto = document.getElementById(idElemento).innerText;
-        navigator.clipboard.writeText(texto).then(() => {
-            const btn = document.getElementById(idBotao);
-            const textoOriginal = btn.innerText;
-            btn.innerText = "✅ Copiado para a memória!";
-            btn.style.backgroundColor = "#ffffff";
-            btn.style.color = "#cc092f";
-            
-            setTimeout(() => {
-                btn.innerText = textoOriginal;
-                btn.style.backgroundColor = "#5eff5e";
-                btn.style.color = "#000000";
-            }, 2500);
-        });
-    }
-
-    function atualizarRelogio() {
-        const agora = new Date();
-        const dia = String(agora.getDate()).padStart(2, '0');
-        const mes = String(agora.getMonth() + 1).padStart(2, '0');
-        const ano = agora.getFullYear();
-        const horas = String(agora.getHours()).padStart(2, '0');
-        const minutos = String(agora.getMinutes()).padStart(2, '0');
+</body>
+</html>
